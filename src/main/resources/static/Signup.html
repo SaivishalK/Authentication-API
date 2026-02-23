@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; margin-top: 100px; }
+        .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; width: 300px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .message { color: red; font-size: 14px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+    <form id="signupForm">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+    <p class="message" id="responseMessage"></p>
+    <p style="text-align: center; font-size: 14px;">
+        Already have an account? <a href="index.html">Log in here</a>
+    </p>
+</div>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName: fullName, email: email, password: password })
+            });
+
+            if (response.ok) {
+                document.getElementById('responseMessage').style.color = "green";
+                document.getElementById('responseMessage').innerText = "Account created! You can now log in.";
+                document.getElementById('signupForm').reset(); // Clears the form
+            } else {
+                const errorText = await response.text();
+                document.getElementById('responseMessage').style.color = "red";
+                document.getElementById('responseMessage').innerText = errorText || "Email already exists!";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
+</script>
+
+</body>
+</html>
