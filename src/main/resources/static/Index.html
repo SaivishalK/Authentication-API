@@ -29,13 +29,12 @@
 
 <script>
     document.getElementById('loginForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevents the page from refreshing
+        // 1. THIS IS THE MAGIC LINE THAT STOPS THE PAGE FROM REFRESHING/WIPING
+        event.preventDefault();
 
-        // 1. Grab the values from the text boxes
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        // 2. Send the request to our Spring Boot API
         try {
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
@@ -43,16 +42,23 @@
                 body: JSON.stringify({ email: email, password: password })
             });
 
-            // 3. Handle the response
             if (response.ok) {
-                document.getElementById('responseMessage').style.color = "green";
-                document.getElementById('responseMessage').innerText = "Login Successful! Welcome!";
+                // Parse the JSON to get the JWT
+                const data = await response.json();
+
+                // Save it to the browser's Local Storage
+                localStorage.setItem('jwtToken', data.token);
+
+                // Teleport to the dashboard
+                window.location.href = '/dashboard.html';
             } else {
                 document.getElementById('responseMessage').style.color = "red";
                 document.getElementById('responseMessage').innerText = "Invalid email or password.";
             }
         } catch (error) {
             console.error("Error:", error);
+            document.getElementById('responseMessage').style.color = "red";
+            document.getElementById('responseMessage').innerText = "Something went wrong!";
         }
     });
 </script>

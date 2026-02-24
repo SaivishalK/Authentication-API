@@ -45,4 +45,8 @@ public class UserService {
         }
         return null; // Login failed
     }
+    // Fetch a user by their email
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
 }

@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for our simple API right now
                 .authorizeHttpRequests(auth -> auth
                         // ADDED THE HTML PAGES TO THE ALLOW LIST BELOW:
-                        .requestMatchers("/", "/index.html", "/signup.html", "/api/auth/signup", "/api/auth/login").permitAll()
+                        .requestMatchers("/", "/index.html", "/dashboard.html","/signup.html", "/api/auth/signup","/api/auth/me","/api/auth/login").permitAll()
                         .anyRequest().authenticated() // Block everything else
                 );
 
