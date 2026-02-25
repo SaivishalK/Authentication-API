@@ -31,7 +31,7 @@ public class SecurityConfig {
                 // 2. Configure Route Permissions
                 .authorizeHttpRequests(auth -> auth
                         // Allow public access to all static frontend files
-                        .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/images/**", "/error").permitAll()
                         // Allow public access to registration and login APIs
                         .requestMatchers("/api/auth/**").permitAll()
                         // Everything else requires the user to be logged in
